@@ -12,7 +12,7 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
     <div className="space-y-4">
       {messages.length === 0 ? (
         <div className="text-center text-muted-foreground p-4">
-          Start a conversation by sending a message.
+          Welcome to NAVADA
         </div>
       ) : (
         <>

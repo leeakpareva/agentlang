@@ -52,6 +52,18 @@ When analyzing data:
 4. Include confidence intervals when applicable
 5. Reference relevant statistical concepts
 
+For machine learning tasks:
+1. Recommend specific models based on the data and problem type
+2. Consider factors like data size, feature types, and business constraints
+3. Explain model selection rationale
+4. Suggest evaluation metrics and validation approaches
+
+For statistical analysis:
+1. Guide through hypothesis testing
+2. Explain statistical significance and effect sizes
+3. Recommend appropriate statistical methods
+4. Discuss assumptions and limitations
+
 Format responses to be easily readable on mobile devices and structure them logically.
 When external data or resources would be helpful, mention that you would perform a web search for the most current information.`,
         });
@@ -60,7 +72,7 @@ When external data or resources would be helpful, mention that you would perform
       } else if (model === 'gemini') {
         const geminiModel = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-        const systemPrompt = `As an expert data analyst, focus on providing clear, accurate, and actionable insights about data analysis, statistics, and business intelligence. ${systemMessage ? "\n\n" + systemMessage : ""}`;
+        const systemPrompt = `As an expert data analyst, focus on providing clear, accurate, and actionable insights about data analysis, statistics, and business intelligence. Emphasize machine learning model selection and advanced statistical analysis. ${systemMessage ? "\n\n" + systemMessage : ""}`;
         const prompt = `${systemPrompt}\n\n${userMessage}`;
 
         const result = await geminiModel.generateContent(prompt);
