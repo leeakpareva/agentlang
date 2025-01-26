@@ -20,15 +20,30 @@ export function registerRoutes(app: Express): Server {
 
       // Add system message if provided
       if (systemMessage) {
-        messages.push({ role: "system", content: systemMessage });
+        messages.push({ role: "user", content: systemMessage });
       }
 
-      messages.push({ role: "user", content: message });
+      // Add current date and time information
+      const now = new Date();
+      const dateTimeContext = `Current date and time: ${now.toLocaleString()}`;
+
+      messages.push({ 
+        role: "user", 
+        content: `${dateTimeContext}\n\nUser request: ${message}` 
+      });
 
       const response = await anthropic.messages.create({
         model: "claude-3-5-sonnet-20241022",
         max_tokens: 1024,
         messages: messages,
+        system: `You are a helpful AI assistant with the following capabilities:
+- You can tell the current time and date
+- You can help with various tasks and queries
+- You should format responses to be easily readable on mobile devices
+- You can perform web searches when needed for up-to-date information
+
+Current date and time information will be provided with each request.
+When searching is needed, mention that you would perform a web search for the most current information.`,
       });
 
       res.json({ message: response.content[0].text });
