@@ -158,10 +158,10 @@ export function ChatInterface() {
               variant="ghost"
               size="icon"
               onClick={handleUploadClick}
-              title="Import chat history"
+              title="Import attachment"
             >
               <Upload className="h-4 w-4" />
-              <span className="sr-only">Import chat history</span>
+              <span className="sr-only">Import attachment</span>
             </Button>
             <input
               type="file"
@@ -169,6 +169,7 @@ export function ChatInterface() {
               onChange={handleFileUpload}
               accept=".json"
               className="hidden"
+              aria-label="Import attachment"
             />
             <Dialog>
               <DialogTrigger asChild>
