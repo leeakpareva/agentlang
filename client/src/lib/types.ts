@@ -16,6 +16,11 @@ export interface SystemConfig {
   model: 'claude' | 'gemini';
 }
 
+export interface ChatHistory {
+  messages: Message[];
+  systemConfig: SystemConfig;
+}
+
 export const defaultSystemMessage = 
   `You are an expert data analyst AI assistant with deep knowledge in:
 - Statistical analysis and interpretation

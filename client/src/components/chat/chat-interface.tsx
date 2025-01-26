@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Bot, Settings } from "lucide-react";
+import { useState, useRef } from "react";
+import { Bot, Settings, Download, Upload } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useToast } from "@/hooks/use-toast";
-import { Message, SystemConfig, defaultSystemMessage } from "@/lib/types";
+import { Message, SystemConfig, ChatHistory, defaultSystemMessage } from "@/lib/types";
 import { MessageList } from "@/components/chat/message-list";
 import { ChatInput } from "@/components/chat/chat-input";
 import { Card } from "@/components/ui/card";
@@ -23,6 +23,7 @@ export function ChatInterface() {
     model: 'claude'
   });
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSendMessage = async (content: string) => {
     if (!content.trim()) return;
@@ -73,6 +74,65 @@ export function ChatInterface() {
     }
   };
 
+  const handleExportChat = () => {
+    try {
+      const chatHistory: ChatHistory = {
+        messages,
+        systemConfig
+      };
+      const blob = new Blob([JSON.stringify(chatHistory, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `chat-history-${new Date().toISOString()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Success",
+        description: "Chat history exported successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to export chat history",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const chatHistory = JSON.parse(content) as ChatHistory;
+        setMessages(chatHistory.messages);
+        setSystemConfig(chatHistory.systemConfig);
+        toast({
+          title: "Success",
+          description: "Chat history imported successfully",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to import chat history",
+          variant: "destructive",
+        });
+      }
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <Card className="relative flex flex-col h-[calc(100vh-1rem)] sm:h-[calc(100vh-2rem)] mx-auto max-w-4xl backdrop-blur-xl bg-background/50 border border-border/50">
       <div className="absolute inset-0 rounded-lg bg-gradient-to-b from-primary/5 to-background/5 pointer-events-none" />
@@ -83,60 +143,88 @@ export function ChatInterface() {
             <Bot className="w-5 h-5 text-primary animate-pulse" />
             <h1 className="font-semibold">Agent Le Lang</h1>
           </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Settings className="h-4 w-4" />
-                <span className="sr-only">Configure AI Personality</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>AI Configuration</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>AI Model</Label>
-                  <Select
-                    value={systemConfig.model}
-                    onValueChange={(value: 'claude' | 'gemini') => 
-                      setSystemConfig(prev => ({ ...prev, model: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select an AI model" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="claude">Claude</SelectItem>
-                      <SelectItem value="gemini">Gemini</SelectItem>
-                    </SelectContent>
-                  </Select>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleExportChat}
+              disabled={messages.length === 0}
+              title="Export chat history"
+            >
+              <Download className="h-4 w-4" />
+              <span className="sr-only">Export chat history</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleUploadClick}
+              title="Import chat history"
+            >
+              <Upload className="h-4 w-4" />
+              <span className="sr-only">Import chat history</span>
+            </Button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              accept=".json"
+              className="hidden"
+            />
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Settings className="h-4 w-4" />
+                  <span className="sr-only">Configure AI Personality</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>AI Configuration</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>AI Model</Label>
+                    <Select
+                      value={systemConfig.model}
+                      onValueChange={(value: 'claude' | 'gemini') => 
+                        setSystemConfig(prev => ({ ...prev, model: value }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an AI model" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="claude">Claude</SelectItem>
+                        <SelectItem value="gemini">Gemini</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="system-message"
+                      checked={systemConfig.enabled}
+                      onCheckedChange={(checked) => 
+                        setSystemConfig(prev => ({ ...prev, enabled: checked }))
+                      }
+                    />
+                    <Label htmlFor="system-message">Enable Custom Personality</Label>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="system-content">System Message</Label>
+                    <Textarea
+                      id="system-content"
+                      placeholder="Define the AI assistant's personality and behavior..."
+                      value={systemConfig.content}
+                      onChange={(e) => 
+                        setSystemConfig(prev => ({ ...prev, content: e.target.value }))
+                      }
+                      className="min-h-[100px]"
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="system-message"
-                    checked={systemConfig.enabled}
-                    onCheckedChange={(checked) => 
-                      setSystemConfig(prev => ({ ...prev, enabled: checked }))
-                    }
-                  />
-                  <Label htmlFor="system-message">Enable Custom Personality</Label>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="system-content">System Message</Label>
-                  <Textarea
-                    id="system-content"
-                    placeholder="Define the AI assistant's personality and behavior..."
-                    value={systemConfig.content}
-                    onChange={(e) => 
-                      setSystemConfig(prev => ({ ...prev, content: e.target.value }))
-                    }
-                    className="min-h-[100px]"
-                  />
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
 
