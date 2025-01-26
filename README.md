@@ -33,8 +33,8 @@ A powerful multi-model AI chat interface supporting both Anthropic's Claude and 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/navada.git
-cd navada
+git clone https://github.com/leeakpareva/agentlang.git
+cd agentlang
 ```
 
 2. Install dependencies:
