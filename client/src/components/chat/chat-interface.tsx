@@ -8,7 +8,7 @@ import { ChatInput } from "@/components/chat/chat-input";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -22,6 +22,8 @@ export function ChatInterface() {
     enabled: false,
     model: 'claude'
   });
+  const [tempConfig, setTempConfig] = useState<SystemConfig>(systemConfig);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -72,6 +74,25 @@ export function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSaveSettings = () => {
+    setSystemConfig(tempConfig);
+    toast({
+      title: "Success",
+      description: "Settings saved successfully",
+    });
+    setIsSettingsOpen(false);
+  };
+
+  const handleSettingsOpen = () => {
+    setTempConfig(systemConfig);
+    setIsSettingsOpen(true);
+  };
+
+  const handleSettingsClose = () => {
+    setTempConfig(systemConfig);
+    setIsSettingsOpen(false);
   };
 
   const handleExportChat = () => {
@@ -147,7 +168,7 @@ export function ChatInterface() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={handleExportChat}
+              onClick={() => handleExportChat()}
               disabled={messages.length === 0}
               title="Export chat history"
             >
@@ -171,9 +192,9 @@ export function ChatInterface() {
               className="hidden"
               aria-label="Import attachment"
             />
-            <Dialog>
+            <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" onClick={handleSettingsOpen}>
                   <Settings className="h-4 w-4" />
                   <span className="sr-only">Configure AI Personality</span>
                 </Button>
@@ -189,9 +210,9 @@ export function ChatInterface() {
                   <div className="space-y-2">
                     <Label>AI Model</Label>
                     <Select
-                      value={systemConfig.model}
+                      value={tempConfig.model}
                       onValueChange={(value: 'claude' | 'gemini') => 
-                        setSystemConfig(prev => ({ ...prev, model: value }))
+                        setTempConfig(prev => ({ ...prev, model: value }))
                       }
                     >
                       <SelectTrigger>
@@ -206,9 +227,9 @@ export function ChatInterface() {
                   <div className="flex items-center space-x-2">
                     <Switch
                       id="system-message"
-                      checked={systemConfig.enabled}
+                      checked={tempConfig.enabled}
                       onCheckedChange={(checked) => 
-                        setSystemConfig(prev => ({ ...prev, enabled: checked }))
+                        setTempConfig(prev => ({ ...prev, enabled: checked }))
                       }
                     />
                     <Label htmlFor="system-message">Enable Custom Personality</Label>
@@ -218,14 +239,22 @@ export function ChatInterface() {
                     <Textarea
                       id="system-content"
                       placeholder="Define the AI assistant's personality and behavior..."
-                      value={systemConfig.content}
+                      value={tempConfig.content}
                       onChange={(e) => 
-                        setSystemConfig(prev => ({ ...prev, content: e.target.value }))
+                        setTempConfig(prev => ({ ...prev, content: e.target.value }))
                       }
                       className="min-h-[100px]"
                     />
                   </div>
                 </div>
+                <DialogFooter className="flex justify-end space-x-2">
+                  <Button variant="outline" onClick={handleSettingsClose}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSaveSettings}>
+                    Save Changes
+                  </Button>
+                </DialogFooter>
               </DialogContent>
             </Dialog>
           </div>
