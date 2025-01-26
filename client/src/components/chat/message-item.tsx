@@ -20,7 +20,7 @@ export function MessageItem({ message }: MessageItemProps) {
     >
       <div className="flex items-center gap-2">
         {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
-        <span className="font-medium">{isUser ? "You" : "Claude"}</span>
+        <span className="font-medium">{isUser ? "You" : "Assistant"}</span>
       </div>
       <div className="whitespace-pre-wrap">{message.content}</div>
     </div>

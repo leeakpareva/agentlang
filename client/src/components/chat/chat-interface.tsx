@@ -50,7 +50,7 @@ export function ChatInterface() {
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An error occurred',
         variant: "destructive",
       });
     } finally {
@@ -59,13 +59,13 @@ export function ChatInterface() {
   };
 
   return (
-    <Card className="relative flex flex-col h-[calc(100vh-12rem)] backdrop-blur-xl bg-background/50 border border-border/50">
+    <Card className="relative flex flex-col h-[calc(100vh-2rem)] mx-auto max-w-4xl backdrop-blur-xl bg-background/50 border border-border/50">
       <div className="absolute inset-0 rounded-lg bg-gradient-to-b from-primary/5 to-background/5 pointer-events-none" />
 
       <div className="relative px-4 py-2 border-b border-border/50 backdrop-blur-sm">
         <div className="flex items-center gap-2">
           <Bot className="w-5 h-5 text-primary animate-pulse" />
-          <h1 className="font-semibold">Claude</h1>
+          <h1 className="font-semibold">Agent Le Lang</h1>
         </div>
       </div>
 
@@ -73,11 +73,10 @@ export function ChatInterface() {
         <MessageList messages={messages} />
       </ScrollArea>
 
-      <div className="border-t border-border/50 p-4 backdrop-blur-sm">
+      <div className="border-t border-border/50 p-2 backdrop-blur-sm">
         <ChatInput onSend={handleSendMessage} isLoading={isLoading} />
       </div>
-
-      <div className="text-xs text-muted-foreground text-center py-2">Powered by Anthropic</div>
+      <div className="text-xs text-muted-foreground text-center py-2">Developed + Coded by Lee Akpareva MBA, MA</div>
     </Card>
   );
 }

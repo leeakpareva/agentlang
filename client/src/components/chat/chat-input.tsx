@@ -36,6 +36,7 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
         disabled={isLoading}
       />
       <Button 
+        size="icon"
         onClick={handleSend} 
         disabled={!input.trim() || isLoading}
         className="shrink-0 bg-primary/90 hover:bg-primary transition-colors"
