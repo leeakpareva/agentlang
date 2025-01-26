@@ -3,8 +3,8 @@ import { Bot } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useToast } from "@/hooks/use-toast";
 import { Message } from "@/lib/types";
-import { MessageList } from "./message-list";
-import { ChatInput } from "./chat-input";
+import { MessageList } from "@/components/chat/message-list";
+import { ChatInput } from "@/components/chat/chat-input";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -70,7 +70,7 @@ export function ChatInterface() {
       </div>
 
       <ScrollArea className="flex-1 p-4">
-        <MessageList messages={messages} />
+        <MessageList messages={messages} isLoading={isLoading} />
       </ScrollArea>
 
       <div className="border-t border-border/50 p-2 backdrop-blur-sm">
