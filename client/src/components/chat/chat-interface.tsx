@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -19,6 +20,7 @@ export function ChatInterface() {
   const [systemConfig, setSystemConfig] = useState<SystemConfig>({
     content: defaultSystemMessage,
     enabled: false,
+    model: 'claude'
   });
   const { toast } = useToast();
 
@@ -42,6 +44,7 @@ export function ChatInterface() {
         body: JSON.stringify({ 
           message: content,
           systemMessage: systemConfig.enabled ? systemConfig.content : undefined,
+          model: systemConfig.model
         }),
       });
 
@@ -89,9 +92,26 @@ export function ChatInterface() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>AI Personality Configuration</DialogTitle>
+                <DialogTitle>AI Configuration</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>AI Model</Label>
+                  <Select
+                    value={systemConfig.model}
+                    onValueChange={(value: 'claude' | 'gemini') => 
+                      setSystemConfig(prev => ({ ...prev, model: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select an AI model" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="claude">Claude</SelectItem>
+                      <SelectItem value="gemini">Gemini</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="system-message"
