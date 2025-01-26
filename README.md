@@ -1,64 +1,75 @@
-# Agent Lang - AI Chat Interface
+# NAVADA - Advanced AI Chat Interface
 
-A modern chat interface powered by Anthropic's Claude AI. Built with React, Express, and TypeScript.
+A powerful multi-model AI chat interface supporting both Anthropic's Claude and Google's Gemini, designed for data analysis and machine learning tasks.
 
 ## Features
 
-- 🤖 Real-time chat with Claude AI
-- 💫 Beautiful UI with smooth animations
-- 📱 Fully responsive design for all devices
-- ⚡ Fast and efficient with server-side rendering
+- 🤖 Multi-model AI Support
+  - Anthropic Claude 3.5 Sonnet
+  - Google Gemini Pro
+- 📊 Advanced Data Analysis Capabilities
+  - Statistical analysis and visualization
+  - Machine learning model recommendations
+  - Hypothesis testing and statistical inference
+- 💫 Modern UI/UX
+  - Beautiful interface with smooth animations
+  - Fully responsive design
+  - System message configuration
+- 📁 Data Management
+  - Export chat history
+  - Import attachments
+  - Persistent conversations
 
 ## Tech Stack
 
-- Frontend: React, TypeScript, ShadcnUI
-- Backend: Express, Node.js
-- AI: Anthropic Claude API
-- Styling: Tailwind CSS
-
-## Business Case
-
-### Problem Statement
-1. **Information Overload:** Users face challenges in filtering through vast amounts of data to find reliable and relevant insights.
-2. **Time-Consuming Research:** Professionals spend significant time on repetitive tasks such as online research, data synthesis, and information gathering.
-3. **Limited Accessibility to Expert Insights:** Not everyone has access to expensive consulting or domain-specific expertise for research and analysis.
-4. **Inefficient User Experience:** Many existing tools lack intuitive interfaces and real-time interactivity, hindering productivity.
-
-### Key Features
-1. **Anthropic Claude Integration:** Provides intelligent, context-aware, and highly accurate responses to user queries.
-2. **User-Friendly Interface:** A modern, responsive UI built with React and Tailwind CSS, offering a seamless user experience.
-3. **Customizable System Messages:** Tailored to specific industries or use cases, ensuring precise and actionable responses.
-4. **Express Backend:** Handles robust communication between the frontend and AI logic.
-
-### Benefits
-- **Increased Productivity:** Reduces time spent on research and analysis
-- **Cost Savings:** Eliminates the need for expensive consulting or additional manpower for routine tasks
-- **Improved Decision-Making:** Provides reliable, well-structured information, enabling better strategic decisions
+- **Frontend**: React, TypeScript, ShadcnUI
+- **Backend**: Express, Node.js
+- **AI Integration**: 
+  - Anthropic Claude API
+  - Google Gemini API
+- **Styling**: Tailwind CSS
 
 ## Getting Started
 
-1. Clone the repository
+1. Clone the repository:
 ```bash
-git clone https://github.com/leeakpareva/agentlang.git
-cd agentlang
+git clone https://github.com/your-username/navada.git
+cd navada
 ```
 
-2. Install dependencies
+2. Install dependencies:
 ```bash
 npm install
 ```
 
 3. Set up environment variables by creating a `.env` file:
 ```
-ANTHROPIC_API_KEY=your_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-4. Start the development server
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
 The application will be available at `http://localhost:5000`.
+
+## Environment Variables
+
+The following environment variables are required:
+
+- `ANTHROPIC_API_KEY`: Your Anthropic API key for Claude
+- `GEMINI_API_KEY`: Your Google API key for Gemini
+
+## Usage
+
+1. **Chat Interface**: Start a conversation by typing your message in the input field
+2. **Switch AI Models**: Use the settings menu to switch between Claude and Gemini
+3. **Custom System Messages**: Configure custom AI personalities and behaviors
+4. **Export/Import**: 
+   - Export your chat history as JSON
+   - Import previous conversations or attachments
 
 ## Development
 
@@ -77,7 +88,3 @@ The application will be available at `http://localhost:5000`.
 ## License
 
 This project is licensed under the MIT License.
-
-## Credits
-
-Developed by Lee Akpareva MBA, MA
