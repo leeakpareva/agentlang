@@ -12,25 +12,17 @@ export function MessageItem({ message }: MessageItemProps) {
   return (
     <div
       className={cn(
-        "flex gap-3 rounded-lg p-4",
-        isUser ? "bg-primary text-primary-foreground" : "bg-muted"
+        "flex w-max max-w-[80%] flex-col gap-2 rounded-lg px-4 py-2 text-sm transition-all hover:shadow-lg",
+        isUser
+          ? "ml-auto bg-gradient-to-br from-primary to-primary/90 text-primary-foreground"
+          : "bg-gradient-to-br from-muted/50 to-muted backdrop-blur-sm border border-border/50"
       )}
     >
-      <div className="shrink-0">
-        {isUser ? (
-          <User className="h-6 w-6" />
-        ) : (
-          <Bot className="h-6 w-6" />
-        )}
+      <div className="flex items-center gap-2">
+        {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+        <span className="font-medium">{isUser ? "You" : "Claude"}</span>
       </div>
-      <div className="flex-1 space-y-2">
-        <div className="font-medium">
-          {isUser ? "You" : "Claude"}
-        </div>
-        <div className="text-sm leading-relaxed whitespace-pre-wrap">
-          {message.content}
-        </div>
-      </div>
+      <div className="whitespace-pre-wrap">{message.content}</div>
     </div>
   );
 }

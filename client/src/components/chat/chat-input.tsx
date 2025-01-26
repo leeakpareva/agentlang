@@ -31,14 +31,14 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Type a message..."
-        className="min-h-[60px] resize-none"
+        placeholder="Type your message..."
+        className="min-h-[52px] resize-none bg-background/50 backdrop-blur-sm border-border/50 focus:ring-primary/20"
         disabled={isLoading}
       />
       <Button 
-        onClick={handleSend}
+        onClick={handleSend} 
         disabled={!input.trim() || isLoading}
-        className="px-4"
+        className="shrink-0 bg-primary/90 hover:bg-primary transition-colors"
       >
         <Send className="h-4 w-4" />
         <span className="sr-only">Send message</span>
