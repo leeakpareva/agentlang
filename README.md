@@ -16,6 +16,25 @@ A modern chat interface powered by Anthropic's Claude AI. Built with React, Expr
 - AI: Anthropic Claude API
 - Styling: Tailwind CSS
 
+## Business Case
+
+### Problem Statement
+1. **Information Overload:** Users face challenges in filtering through vast amounts of data to find reliable and relevant insights.
+2. **Time-Consuming Research:** Professionals spend significant time on repetitive tasks such as online research, data synthesis, and information gathering.
+3. **Limited Accessibility to Expert Insights:** Not everyone has access to expensive consulting or domain-specific expertise for research and analysis.
+4. **Inefficient User Experience:** Many existing tools lack intuitive interfaces and real-time interactivity, hindering productivity.
+
+### Key Features
+1. **Anthropic Claude Integration:** Provides intelligent, context-aware, and highly accurate responses to user queries.
+2. **User-Friendly Interface:** A modern, responsive UI built with React and Tailwind CSS, offering a seamless user experience.
+3. **Customizable System Messages:** Tailored to specific industries or use cases, ensuring precise and actionable responses.
+4. **Express Backend:** Handles robust communication between the frontend and AI logic.
+
+### Benefits
+- **Increased Productivity:** Reduces time spent on research and analysis
+- **Cost Savings:** Eliminates the need for expensive consulting or additional manpower for routine tasks
+- **Improved Decision-Making:** Provides reliable, well-structured information, enabling better strategic decisions
+
 ## Getting Started
 
 1. Clone the repository

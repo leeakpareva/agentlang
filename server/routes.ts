@@ -10,16 +10,25 @@ export function registerRoutes(app: Express): Server {
 
   app.post("/api/chat", async (req, res) => {
     try {
-      const { message } = req.body;
+      const { message, systemMessage } = req.body;
 
       if (!message) {
         return res.status(400).json({ error: "Message is required" });
       }
 
+      const messages = [];
+
+      // Add system message if provided
+      if (systemMessage) {
+        messages.push({ role: "system", content: systemMessage });
+      }
+
+      messages.push({ role: "user", content: message });
+
       const response = await anthropic.messages.create({
         model: "claude-3-5-sonnet-20241022",
         max_tokens: 1024,
-        messages: [{ role: "user", content: message }],
+        messages: messages,
       });
 
       res.json({ message: response.content[0].text });
