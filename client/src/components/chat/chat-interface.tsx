@@ -8,7 +8,7 @@ import { ChatInput } from "@/components/chat/chat-input";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -181,6 +181,9 @@ export function ChatInterface() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>AI Configuration</DialogTitle>
+                  <DialogDescription>
+                    Configure the AI assistant's personality and behavior. You can switch between different AI models and customize how they respond.
+                  </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div className="space-y-2">
