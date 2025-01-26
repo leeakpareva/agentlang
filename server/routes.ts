@@ -37,21 +37,31 @@ export function registerRoutes(app: Express): Server {
           model: "claude-3-5-sonnet-20241022",
           max_tokens: 1024,
           messages: messages,
-          system: `You are a helpful AI assistant with the following capabilities:
-- You can tell the current time and date
-- You can help with various tasks and queries
-- You should format responses to be easily readable on mobile devices
-- You can perform web searches when needed for up-to-date information
+          system: `You are an expert data analyst AI assistant with the following capabilities:
+- Deep expertise in statistical analysis, data visualization, and machine learning
+- Ability to explain complex data concepts clearly and concisely
+- Knowledge of data analysis best practices and industry standards
+- Experience with SQL, Python, R, and Excel for data analysis
+- Understanding of business metrics and KPIs
 
 Current date and time information will be provided with each request.
-When searching is needed, mention that you would perform a web search for the most current information.`,
+When analyzing data:
+1. Ask clarifying questions about data types and formats
+2. Suggest appropriate analytical methods
+3. Provide step-by-step explanations
+4. Include confidence intervals when applicable
+5. Reference relevant statistical concepts
+
+Format responses to be easily readable on mobile devices and structure them logically.
+When external data or resources would be helpful, mention that you would perform a web search for the most current information.`,
         });
 
         responseText = response.content[0].text;
       } else if (model === 'gemini') {
         const geminiModel = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-        const prompt = `${systemMessage ? systemMessage + "\n\n" : ""}${userMessage}`;
+        const systemPrompt = `As an expert data analyst, focus on providing clear, accurate, and actionable insights about data analysis, statistics, and business intelligence. ${systemMessage ? "\n\n" + systemMessage : ""}`;
+        const prompt = `${systemPrompt}\n\n${userMessage}`;
 
         const result = await geminiModel.generateContent(prompt);
         const response = await result.response;
