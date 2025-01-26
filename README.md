@@ -2,6 +2,8 @@
 
 A powerful multi-model AI chat interface supporting both Anthropic's Claude and Google's Gemini, designed for data analysis and machine learning tasks.
 
+Raw Python interface "C:\Users\leeak\OneDrive\Desktop\langchain1\gui_app.py". 
+
 ## Features
 
 - 🤖 Multi-model AI Support
